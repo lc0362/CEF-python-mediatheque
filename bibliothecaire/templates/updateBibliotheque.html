@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Modification des articles</title>
+    <script>
+        function toggleForm(id) {
+            var form = document.getElementById(id);
+            if (form.style.display === "none") {
+                form.style.display = "block";
+            } else {
+                form.style.display = "none";
+            }
+        }
+
+        function deleteItem(itemType, itemId) {
+            if (confirm("Confirmez-vous la suppression ?")) {
+                fetch(`/bibliothecaire/delete/${itemType}/${itemId}/`, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': getCSRFToken(),
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        document.getElementById(`item_${itemType}_${itemId}`).remove();
+                    } else {
+                        alert("Erreur lors de la suppression ! " + data.error);
+                    }
+                })
+                .catch(error => console.error("Erreur :", error));
+            }
+        }
+
+        function getCSRFToken() {
+            let csrfToken = document.querySelector('[name=csrfmiddlewaretoken]');
+            return csrfToken ? csrfToken.value : '';
+        }
+    </script>
+</head>
+<body>
+    <a href="/bibliothecaire">Retourner sur le menu Bibliothécaire</a>
+
+    <h1>Modifier ou Supprimer un article</h1>
+
+    <h2>Livres</h2>
+    <ul>
+        {% for livre in livres %}
+            <li id="item_livre_{{ livre.id }}">
+                Titre : {{ livre.name }} | Auteur : {{ livre.auteur }} | Disponibilité : {{ livre.disponible }}
+                <button onclick="toggleForm('update_livre_{{ livre.id }}')">Modifier</button>
+                <button onclick="deleteItem('livre', {{ livre.id }})">Supprimer</button>
+
+                <div id="update_livre_{{ livre.id }}" style="display: none;">
+                    <form method="POST">
+                        {% csrf_token %}
+                        {% for id, form in update_forms_livres %}
+                            {% if livre.id == id %}
+                                {{ form.as_table }}
+                            {% endif %}
+                        {% endfor %}
+                        <input type="hidden" name="modif_livre" value="{{ livre.id }}">
+                        <input type="submit" value="Enregistrer">
+                    </form>
+                </div>
+            </li>
+        {% empty %}
+            <li>Aucun livre disponible.</li>
+        {% endfor %}
+    </ul>
+
+    <h2>DVDs</h2>
+    <ul>
+        {% for dvd in dvds %}
+            <li id="item_dvd_{{ dvd.id }}">
+                Titre : {{ dvd.name }} | Réalisateur : {{ dvd.realisateur }}
+                <button onclick="toggleForm('update_dvd_{{ dvd.id }}')">Modifier</button>
+                <button onclick="deleteItem('dvd', {{ dvd.id }})">Supprimer</button>
+
+                <div id="update_dvd_{{ dvd.id }}" style="display: none;">
+                    <form method="POST">
+                        {% csrf_token %}
+                        {% for id, form in update_forms_dvds %}
+                            {% if dvd.id == id %}
+                                {{ form.as_table }}
+                            {% endif %}
+                        {% endfor %}
+                        <input type="hidden" name="modif_dvd" value="{{ dvd.id }}">
+                        <input type="submit" value="Enregistrer">
+                    </form>
+                </div>
+            </li>
+        {% empty %}
+            <li>Aucun DVD disponible.</li>
+        {% endfor %}
+    </ul>
+
+    <h2>CDs</h2>
+    <ul>
+        {% for cd in cds %}
+            <li id="item_cd_{{ cd.id }}">
+                Titre : {{ cd.name }} | Artiste : {{ cd.artiste }}
+                <button onclick="toggleForm('update_cd_{{ cd.id }}')">Modifier</button>
+                <button onclick="deleteItem('cd', {{ cd.id }})">Supprimer</button>
+
+                <div id="update_cd_{{ cd.id }}" style="display: none;">
+                    <form method="POST">
+                        {% csrf_token %}
+                        {% for id, form in update_forms_cds %}
+                            {% if cd.id == id %}
+                                {{ form.as_table }}
+                            {% endif %}
+                        {% endfor %}
+                        <input type="hidden" name="modif_cd" value="{{ cd.id }}">
+                        <input type="submit" value="Enregistrer">
+                    </form>
+                </div>
+            </li>
+        {% empty %}
+            <li>Aucun CD disponible.</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Jeux de plateau</h2>
+    <ul>
+        {% for jeu in jeux %}
+            <li id="item_jeu_{{ jeu.id }}">
+                Titre : {{ jeu.name }} | Créateur : {{ jeu.createur }}
+                <button onclick="toggleForm('update_jeu_{{ jeu.id }}')">Modifier</button>
+                <button onclick="deleteItem('jeu', {{ jeu.id }})">Supprimer</button>
+
+                <div id="update_jeu_{{ jeu.id }}" style="display: none;">
+                    <form method="POST">
+                        {% csrf_token %}
+                        {% for id, form in update_forms_jeux %}
+                            {% if jeu.id == id %}
+                                {{ form.as_table }}
+                            {% endif %}
+                        {% endfor %}
+                        <input type="hidden" name="modif_jeu" value="{{ jeu.id }}">
+                        <input type="submit" value="Enregistrer">
+                    </form>
+                </div>
+            </li>
+        {% empty %}
+            <li>Aucun jeu de plateau disponible.</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
