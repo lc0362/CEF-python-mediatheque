@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Médiathèque des Oliviers | Ajouter un article</title>
+</head>
+<header>
+<a href="/bibliothecaire">Retourner sur le menu Bibliothécaire</a>
+</header>
+<body>
+<h1>Ajouter un article</h1>
+
+
+
+{% if messages %}
+        {% for message in messages %}
+            <p class="{{ message.tags }}">{{ message }}</p>
+        {% endfor %}
+{% endif %}
+
+<h2>Livre</h2>
+<form method="POST">
+    {% csrf_token %}
+    {{ form_livres.as_table }}
+    <button type="submit" name="ajout_livre">Ajouter un Livre</button>
+</form>
+
+<h2>DVD</h2>
+<form method="POST">
+    {% csrf_token %}
+    {{ form_dvds.as_table }}
+    <button type="submit" name="ajout_dvd">Ajouter un DVD</button>
+</form>
+
+<h2>CD</h2>
+<form method="POST">
+    {% csrf_token %}
+    {{ form_cds.as_table }}
+    <button type="submit" name="ajout_cd">Ajouter un CD</button>
+</form>
+
+<h2>Jeu de plateau</h2>
+<form method="POST">
+    {% csrf_token %}
+    {{ form_jeux.as_table }}
+    <button type="submit" name="ajout_jeu">Ajouter un Jeu</button>
+</form>
+
+</body>
+</html>
