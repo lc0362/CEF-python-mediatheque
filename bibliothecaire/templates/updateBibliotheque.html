@@ -16,28 +16,28 @@
         function deleteItem(itemType, itemId) {
             if (confirm("Confirmez-vous la suppression ?")) {
                 fetch(`/bibliothecaire/delete/${itemType}/${itemId}/`, {
-                    method: 'POST',
-                    headers: {
-                        'X-CSRFToken': getCSRFToken(),
-                        'Content-Type': 'application/json'
-                    }
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        document.getElementById(`item_${itemType}_${itemId}`).remove();
-                    } else {
-                        alert("Erreur lors de la suppression ! " + data.error);
-                    }
-                })
-                .catch(error => console.error("Erreur :", error));
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': getCSRFToken(),
+                'Content-Type': 'application/json'
             }
-        }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                document.getElementById(`item_${itemType}_${itemId}`).remove();
+            } else {
+                alert("Erreur lors de la suppression ! " + data.error);
+            }
+        })
+        .catch(error => console.error("Erreur :", error));
+    }
+}
 
-        function getCSRFToken() {
-            let csrfToken = document.querySelector('[name=csrfmiddlewaretoken]');
-            return csrfToken ? csrfToken.value : '';
-        }
+function getCSRFToken() {
+    let csrfToken = document.querySelector('[name=csrfmiddlewaretoken]');
+    return csrfToken ? csrfToken.value : '';
+}
     </script>
 </head>
 <body>
