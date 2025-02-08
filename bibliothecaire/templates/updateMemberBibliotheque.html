@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Modification des membres</title>
+    <script>
+        function toggleForm(id) {
+            var form = document.getElementById(id);
+            if (form.style.display === "none" || form.style.display === "") {
+                form.style.display = "block";
+            } else {
+                form.style.display = "none";
+            }
+        }
+
+        function deleteMember(membreId) {
+            if (confirm("Confirmez-vous la suppression du membre ?")) {
+                fetch(`/bibliothecaire/delete-member/${membreId}/`, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': getCSRFToken(),
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        document.getElementById(`membre_${membreId}`).remove();
+                    } else {
+                        alert("Erreur lors de la suppression !");
+                    }
+                })
+                .catch(error => console.error("Erreur :", error));
+            }
+        }
+
+        function getCSRFToken() {
+            let csrfToken = document.querySelector('[name=csrfmiddlewaretoken]');
+            return csrfToken ? csrfToken.value : '';
+        }
+    </script>
+</head>
+<body>
+    <a href="/bibliothecaire">Retourner sur le menu Bibliothécaire</a>
+
+    <h1>Modifier ou Supprimer un Membre</h1>
+
+    <h2>Membres</h2>
+    <ul>
+        {% for membre, form in update_forms_membres.items %}
+            <li id="membre_{{ membre.id }}">
+                <b>Nom :</b> {{ membre.nom }} | <b>Prénom :</b> {{ membre.prenom }} |
+                <b>Email :</b> {{ membre.email }} | <b>Téléphone :</b> {{ membre.telephone|default:"Non renseigné" }}
+
+                <button onclick="toggleForm('update_membre_{{ membre.id }}')">Modifier</button>
+                <button onclick="deleteMember({{ membre.id }})">Supprimer</button>
+
+                <div id="update_membre_{{ membre.id }}" style="display: none;">
+                    <form method="POST">
+                        {% csrf_token %}
+                        {{ form.as_table }}
+                        <input type="hidden" name="modif_membre" value="{{ membre.id }}">
+                        <input type="submit" value="Enregistrer">
+                    </form>
+                </div>
+            </li>
+        {% empty %}
+            <li>Aucun membre disponible.</li>
+        {% endfor %}
+    </ul>
+
+
+</body>
+</html>
