@@ -1,11 +1,13 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.csrf import csrf_protect
 from mediatheque.models.jeu import JeuDePlateau
 from mediatheque.models.media import Livre, Cd, Dvd
 from .forms import FormJeux, FormLivres, FormCds, FormDvds, UpdateLivreForm, UpdateCdForm, UpdateDvdForm, UpdateJeuForm
+from django.contrib.auth.decorators import login_required
 
+@login_required
 def menuBibliotheque(request):
     return render(request, "menuBibliotheque.html")
 
@@ -108,7 +110,7 @@ def updateBibliotheque(request):
 
     return render(request, "updateBibliotheque.html", dictionnaire)
 
-@csrf_exempt
+@csrf_protect
 def delete_item(request, item_type, item_id):
     model_map = {
         'livre': Livre,
