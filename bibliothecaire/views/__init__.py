@@ -3,3 +3,6 @@ from .addBibliotheque import addBibliotheque
 from .updateBibliotheque import updateBibliotheque
 from .deleteBibliotheque import delete_item
 from .addMemberBibliotheque import addMemberBibliotheque
+from .updateMemberBibliotheque import updateMemberBibliotheque
+from .delete_member import delete_member
+
