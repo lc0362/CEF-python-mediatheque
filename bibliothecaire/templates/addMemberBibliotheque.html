@@ -10,19 +10,28 @@
 <body>
 <h1>Créer un membre emprunteur</h1>
 
-{% if messages %}
-    {% for message in messages %}
-        <p class="{{ message.tags }}">{{ message }}</p>
-    {% endfor %}
-{% endif %}
-
 <form method="POST">
     {% csrf_token %}
     <table>
         {{ form_member.as_table }}
     </table>
+
+    {% if form_member.errors %}
+        <div class="errorlist">
+            <ul>
+                {% for field, errors in form_member.errors.items %}
+                    {% for error in errors %}
+                        <li><strong>{{ field }}</strong> : {{ error }}</li>
+                    {% endfor %}
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+
     <button type="submit">Ajouter un membre</button>
 </form>
+
+
 
 </body>
 </html>

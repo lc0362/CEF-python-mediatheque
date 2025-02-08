@@ -5,7 +5,7 @@ from bibliothecaire.forms import FormMember
 
 def addMemberBibliotheque(request):
     membres = Membre.objects.all()
-    form_member = FormMember()
+    form_member = FormMember(request.POST or None)
 
     if request.method == 'POST':
         form = FormMember(request.POST)
