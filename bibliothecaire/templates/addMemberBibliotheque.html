@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Créer un membre emprunteur</title>
+</head>
+<header>
+    <a href="/bibliothecaire">Retourner sur le menu Bibliothécaire</a>
+</header>
+<body>
+<h1>Créer un membre emprunteur</h1>
+
+{% if messages %}
+    {% for message in messages %}
+        <p class="{{ message.tags }}">{{ message }}</p>
+    {% endfor %}
+{% endif %}
+
+<form method="POST">
+    {% csrf_token %}
+    <table>
+        {{ form_member.as_table }}
+    </table>
+    <button type="submit">Ajouter un membre</button>
+</form>
+
+</body>
+</html>

@@ -1,3 +1,4 @@
+"""
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.http import JsonResponse
@@ -129,3 +130,4 @@ def delete_item(request, item_type, item_id):
         return JsonResponse({'success': True, 'item_id': item_id, 'item_type': item_type})
 
     return JsonResponse({'success': False, 'error': "Méthode non autorisée"}, status=405)
+"""
