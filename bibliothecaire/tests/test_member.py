@@ -1,6 +1,6 @@
 from django.test import TestCase
 from django.urls import reverse
-from bibliothecaire.models import Membre
+from mediatheque.models.membre import Emprunteur
 import re
 
 class TestAddMember(TestCase):
@@ -15,7 +15,6 @@ class TestAddMember(TestCase):
         }
         response = self.client.post(reverse('addMemberBibliotheque'), data)
 
-        # Vérifie si le message "Ce champ est obligatoire." est dans une liste d'erreurs
         self.assertRegex(response.content.decode(), re.escape("Ce champ est obligatoire."))
 
     def test_miss_firstname(self):
@@ -28,7 +27,6 @@ class TestAddMember(TestCase):
         }
         response = self.client.post(reverse('addMemberBibliotheque'), data)
 
-        # Vérifie si le message "Ce champ est obligatoire." est dans une liste d'erreurs
         self.assertRegex(response.content.decode(), re.escape("Ce champ est obligatoire."))
 
     def test_miss_email(self):
@@ -41,21 +39,15 @@ class TestAddMember(TestCase):
         }
         response = self.client.post(reverse('addMemberBibliotheque'), data)
 
-        # Vérifie si le message "Ce champ est obligatoire." est dans une liste d'erreurs
         self.assertRegex(response.content.decode(), re.escape("Ce champ est obligatoire."))
 
 class TestUpdateMember(TestCase):
     def setUp(self):
-        self.membre = Membre.objects.create(nom="Doe", prenom="John", email="johndoe@gmail.com", telephone="0600000000", optin=False)
+        self.membre = Emprunteur.objects.create(nom="Doe", prenom="John", email="johndoe@gmail.com", telephone="0600000000", optin=False)
 
     def test_update_member(self):
-        """
-        Vérifie qu'on peut modifier un membre.
-        """
-        # Vérifier la valeur initiale du téléphone
         self.assertEqual(self.membre.telephone, "0600000000")
 
-        # Préparation des données de mise à jour
         data = {
             "nom": self.membre.nom,
             "prenom": self.membre.prenom,
@@ -65,7 +57,6 @@ class TestUpdateMember(TestCase):
             "modif_membre": self.membre.id
         }
 
-        # Effectuer la requête POST pour modifier le membre
         response = self.client.post(reverse('updateMemberBibliotheque'), data)
 
         # Vérifier que la vue redirige bien (HTTP 302)
@@ -78,8 +69,5 @@ class TestUpdateMember(TestCase):
         self.assertEqual(self.membre.telephone, "0600000001")
 
     def test_delete_member(self):
-        """
-        Vérifie qu'on peut supprimer un membre.
-        """
         response = self.client.post(reverse('delete_member', args=[self.membre.id]))
         self.assertEqual(Membre.objects.count(), 0)

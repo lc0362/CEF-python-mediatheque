@@ -6,8 +6,10 @@ from .views import (
     delete_item,
     addMemberBibliotheque,
     updateMemberBibliotheque,
-    delete_member
-    )
+    delete_member,
+    loan_management,
+    return_item,
+)
 
 urlpatterns = [
     path('', menuBibliotheque, name="menuBibliotheque"),
@@ -17,4 +19,6 @@ urlpatterns = [
     path('add-member/', addMemberBibliotheque, name="addMemberBibliotheque"),
     path('update-member/', updateMemberBibliotheque, name="updateMemberBibliotheque"),
     path('delete-member/<int:membre_id>/', delete_member, name="delete_member"),
+    path('loan/', loan_management, name="loan_management"),
+    path("return/<int:emprunt_id>/", return_item, name="return_item"),
 ]

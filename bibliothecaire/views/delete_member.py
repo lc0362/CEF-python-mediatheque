@@ -1,9 +1,9 @@
 from django.shortcuts import get_object_or_404
 from django.http import JsonResponse
-from bibliothecaire.models import Membre
+from bibliothecaire.models import Emprunteur
 
 def delete_member(request, membre_id):
-    membre = get_object_or_404(Membre, pk=membre_id)
+    membre = get_object_or_404(Emprunteur, pk=membre_id)
 
     if request.method == 'POST':
         membre.delete()
