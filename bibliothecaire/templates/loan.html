@@ -1,0 +1,95 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <link rel="shortcut icon" href="{% static 'imgs/favicon.ico' %}">
+    <title>Gestion des emprunts</title>
+</head>
+<body>
+
+<header>
+    <a href="/bibliothecaire">Retourner sur le menu Bibliothécaire</a>
+</header>
+
+<h1>Gestion des emprunts</h1>
+
+{% if messages %}
+    {% for message in messages %}
+        <p class="{{ message.tags }}">{{ message }}</p>
+    {% endfor %}
+{% endif %}
+
+<form id="loanForm" method="POST">
+    {% csrf_token %}
+    <label for="membre">Sélectionnez un membre :</label>
+    <select name="membre_id" id="membre">
+        <option value="">-- Choisir un membre --</option>
+        {% for membre in membres %}
+            <option value="{{ membre.id }}">{{ membre.nom }} {{ membre.prenom }}</option>
+        {% endfor %}
+    </select>
+
+    <h2>Livres</h2>
+    <ul>
+        {% for livre in livres %}
+            <li>
+                {{ livre.name }} - {{ livre.auteur }}
+                <button type="submit" name="item_type" value="livre">Emprunter</button>
+                <input type="hidden" name="item_id" value="{{ livre.id }}">
+            </li>
+        {% empty %}
+            <li>Aucun livre disponible.</li>
+        {% endfor %}
+    </ul>
+
+    <h2>CDs</h2>
+    <ul>
+        {% for cd in cds %}
+            <li>
+                {{ cd.name }} - {{ cd.artiste }}
+                <button type="submit" name="item_type" value="cd">Emprunter</button>
+                <input type="hidden" name="item_id" value="{{ cd.id }}">
+            </li>
+        {% empty %}
+            <li>Aucun CD disponible.</li>
+        {% endfor %}
+    </ul>
+
+    <h2>DVDs</h2>
+    <ul>
+        {% for dvd in dvds %}
+            <li>
+                {{ dvd.name }} - {{ dvd.realisateur }}
+                <button type="submit" name="item_type" value="dvd">Emprunter</button>
+                <input type="hidden" name="item_id" value="{{ dvd.id }}">
+            </li>
+        {% empty %}
+            <li>Aucun DVD disponible.</li>
+        {% endfor %}
+    </ul>
+</form>
+
+<h2>Emprunts en cours</h2>
+<ul>
+    {% for membre in membres %}
+        <li>
+            <strong>{{ membre.nom }} {{ membre.prenom }}</strong>
+            {% if membre.emprunt_set.all %}
+                <ul>
+                    {% for emprunt in membre.emprunt_set.all %}
+                        <li>
+                            {{ emprunt.item_type }} - ID {{ emprunt.item_id }}
+                            <a href="{% url 'return_item' emprunt.id %}">Rendre</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                Aucun emprunt.
+            {% endif %}
+        </li>
+    {% endfor %}
+</ul>
+
+</body>
+</html>

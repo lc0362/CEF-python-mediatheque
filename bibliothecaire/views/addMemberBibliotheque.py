@@ -1,10 +1,10 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from bibliothecaire.models import Membre
+from bibliothecaire.models import Emprunteur
 from bibliothecaire.forms import FormMember
 
 def addMemberBibliotheque(request):
-    membres = Membre.objects.all()
+    membres = Emprunteur.objects.all()
     form_member = FormMember(request.POST or None)
 
     if request.method == 'POST':

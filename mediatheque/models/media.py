@@ -1,6 +1,5 @@
 from django.db import models
-from .membre import Emprunteur
-
+from bibliothecaire.models.membre import Emprunteur
 
 class Media(models.Model):
     name = models.CharField(max_length=150)
