@@ -1,8 +1,7 @@
 from django.shortcuts import get_object_or_404
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_protect
-from mediatheque.models.media import Livre, Cd, Dvd
-from mediatheque.models.jeu import JeuDePlateau
+from mediatheque.models import Livre, Cd, Dvd, JeuDePlateau
 
 @csrf_protect
 def delete_item(request, item_type, item_id):

@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from bibliothecaire.models import Emprunteur
+from bibliothecaire.models.membre import Emprunteur
 from bibliothecaire.forms import FormMember
 
 def addMemberBibliotheque(request):

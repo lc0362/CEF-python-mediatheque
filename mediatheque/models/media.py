@@ -1,11 +1,10 @@
 from django.db import models
-from bibliothecaire.models.membre import Emprunteur
 
 class Media(models.Model):
     name = models.CharField(max_length=150)
     date_emprunt = models.DateField(null=True, blank=True)
     disponible = models.BooleanField(default=True)
-    emprunteur = models.ForeignKey(Emprunteur, on_delete=models.SET_NULL, null=True, blank=True)
+    emprunteur = models.ForeignKey("bibliothecaire.Emprunteur", on_delete=models.SET_NULL, null=True, blank=True)
 
 class Livre(Media):
     auteur = models.CharField(max_length=150)

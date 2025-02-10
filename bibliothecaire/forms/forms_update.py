@@ -1,6 +1,5 @@
 from django import forms
-from mediatheque.models.media import Livre, Cd, Dvd
-from mediatheque.models.jeu import JeuDePlateau
+from mediatheque.models import Livre, Cd, Dvd, JeuDePlateau
 
 class UpdateLivreForm(forms.ModelForm):
     class Meta:

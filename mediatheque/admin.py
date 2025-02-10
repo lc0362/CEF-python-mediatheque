@@ -1,6 +1,5 @@
 from django.contrib import admin
-from .models.jeu import JeuDePlateau
-from .models.media import Livre, Dvd, Cd
+from .models import Livre, Dvd, Cd, JeuDePlateau
 
 admin.site.register(JeuDePlateau)
 admin.site.register(Livre)

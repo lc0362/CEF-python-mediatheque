@@ -1,5 +1,5 @@
 from django import forms
-from bibliothecaire.models.membre import Emprunteur
+from bibliothecaire.models import Emprunteur
 
 class FormMember(forms.ModelForm):
     class Meta:
