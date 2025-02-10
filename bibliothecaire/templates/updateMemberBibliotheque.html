@@ -51,7 +51,7 @@
     <ul>
         {% for membre, form in update_forms_membres.items %}
             <li id="membre_{{ membre.id }}">
-                <b>Nom :</b> {{ membre.nom }} | <b>Prénom :</b> {{ membre.prenom }} |
+                <b>Nom :</b> {{ membre.nom.title }} | <b>Prénom :</b> {{ membre.prenom.title }} |
                 <b>Email :</b> {{ membre.email }} | <b>Téléphone :</b> {{ membre.telephone|default:"Non renseigné" }}
 
                 <button onclick="toggleForm('update_membre_{{ membre.id }}')">Modifier</button>

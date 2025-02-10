@@ -49,7 +49,7 @@ function getCSRFToken() {
 
     <h2>Livres</h2>
     <ul>
-        {% for livre in livres %}
+        {% for livre in livres|dictsort:"name" %}
             <li id="item_livre_{{ livre.id }}">
                 Titre : {{ livre.name }} | Auteur : {{ livre.auteur }} | Disponibilité : {{ livre.disponible }}
                 <button onclick="toggleForm('update_livre_{{ livre.id }}')">Modifier</button>
@@ -75,7 +75,7 @@ function getCSRFToken() {
 
     <h2>DVDs</h2>
     <ul>
-        {% for dvd in dvds %}
+        {% for dvd in dvds|dictsort:"name" %}
             <li id="item_dvd_{{ dvd.id }}">
                 Titre : {{ dvd.name }} | Réalisateur : {{ dvd.realisateur }}
                 <button onclick="toggleForm('update_dvd_{{ dvd.id }}')">Modifier</button>
@@ -101,7 +101,7 @@ function getCSRFToken() {
 
     <h2>CDs</h2>
     <ul>
-        {% for cd in cds %}
+        {% for cd in cds|dictsort:"name" %}
             <li id="item_cd_{{ cd.id }}">
                 Titre : {{ cd.name }} | Artiste : {{ cd.artiste }}
                 <button onclick="toggleForm('update_cd_{{ cd.id }}')">Modifier</button>
@@ -127,7 +127,7 @@ function getCSRFToken() {
 
     <h2>Jeux de plateau</h2>
     <ul>
-        {% for jeu in jeux %}
+        {% for jeu in jeux|dictsort:"name" %}
             <li id="item_jeu_{{ jeu.id }}">
                 Titre : {{ jeu.name }} | Créateur : {{ jeu.createur }}
                 <button onclick="toggleForm('update_jeu_{{ jeu.id }}')">Modifier</button>
@@ -150,5 +150,6 @@ function getCSRFToken() {
             <li>Aucun jeu de plateau disponible.</li>
         {% endfor %}
     </ul>
+
 </body>
 </html>
