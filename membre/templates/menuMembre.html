@@ -14,7 +14,7 @@
 
 <h2>Livres</h2>
 <ul>
-    {% for livre in livres %}
+    {% for livre in livres|dictsort:"name" %}
         <li>Titre : {{ livre.name }} | Auteur : {{ livre.auteur }} | Disponibilité ? {{ livre.disponible}}</li>
     {% empty %}
         <li>Aucun livre disponible.</li>
@@ -23,7 +23,7 @@
 
 <h2>DVDs</h2>
 <ul>
-    {% for dvd in dvds %}
+    {% for dvd in dvds|dictsort:"name" %}
         <li>Titre : {{ dvd.name }} | Réalisateur : {{ dvd.realisateur }}</li>
     {% empty %}
         <li>Aucun DVD disponible.</li>
@@ -32,7 +32,7 @@
 
 <h2>CDs</h2>
 <ul>
-    {% for cd in cds %}
+    {% for cd in cds|dictsort:"name" %}
         <li>Titre : {{ cd.name }} | Artiste : {{ cd.artiste }}</li>
     {% empty %}
         <li>Aucun CD disponible.</li>
@@ -42,7 +42,7 @@
 <h2>Jeux de plateau</h2>
 <p>Consultables sur place uniquement.</p>
 <ul>
-    {% for jeu in jeux %}
+    {% for jeu in jeux|dictsort:"name" %}
         <li>Titre : {{ jeu.name }} | Créateur : {{ jeu.createur }} </li>
     {% empty %}
         <li>Aucun jeu de plateau disponible.</li>

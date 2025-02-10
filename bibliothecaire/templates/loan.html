@@ -20,23 +20,25 @@
     {% endfor %}
 {% endif %}
 
-<form id="loanForm" method="POST">
+<form method="POST">
     {% csrf_token %}
     <label for="membre">Sélectionnez un membre :</label>
     <select name="membre_id" id="membre">
         <option value="">-- Choisir un membre --</option>
         {% for membre in membres %}
-            <option value="{{ membre.id }}">{{ membre.nom }} {{ membre.prenom }}</option>
+            <option value="{{ membre.id }}">{{ membre.nom.title }} {{ membre.prenom.title }}</option>
         {% endfor %}
     </select>
 
     <h2>Livres</h2>
     <ul>
-        {% for livre in livres %}
+        {% for livre in livres|dictsort:"name" %}
             <li>
-                {{ livre.name }} - {{ livre.auteur }}
-                <button type="submit" name="item_type" value="livre">Emprunter</button>
-                <input type="hidden" name="item_id" value="{{ livre.id }}">
+                {{ livre.name.capitalize }} - {{ livre.auteur.title }}
+                <button type="submit" name="item_type" value="livre"
+                        onclick="document.getElementById('item_id').value='{{ livre.id }}'">
+                    Emprunter
+                </button>
             </li>
         {% empty %}
             <li>Aucun livre disponible.</li>
@@ -45,11 +47,13 @@
 
     <h2>CDs</h2>
     <ul>
-        {% for cd in cds %}
+        {% for cd in cds|dictsort:"name" %}
             <li>
-                {{ cd.name }} - {{ cd.artiste }}
-                <button type="submit" name="item_type" value="cd">Emprunter</button>
-                <input type="hidden" name="item_id" value="{{ cd.id }}">
+                {{ cd.name.capitalize }} - {{ cd.artiste.title }}
+                <button type="submit" name="item_type" value="cd"
+                        onclick="document.getElementById('item_id').value='{{ cd.id }}'">
+                    Emprunter
+                </button>
             </li>
         {% empty %}
             <li>Aucun CD disponible.</li>
@@ -58,38 +62,52 @@
 
     <h2>DVDs</h2>
     <ul>
-        {% for dvd in dvds %}
+        {% for dvd in dvds|dictsort:"name" %}
             <li>
-                {{ dvd.name }} - {{ dvd.realisateur }}
-                <button type="submit" name="item_type" value="dvd">Emprunter</button>
-                <input type="hidden" name="item_id" value="{{ dvd.id }}">
+                {{ dvd.name.capitalize }} - {{ dvd.realisateur.title }}
+                <button type="submit" name="item_type" value="dvd"
+                        onclick="document.getElementById('item_id').value='{{ dvd.id }}'">
+                    Emprunter
+                </button>
             </li>
         {% empty %}
             <li>Aucun DVD disponible.</li>
         {% endfor %}
     </ul>
+
+    <!-- Champ hidden pour stocker l'ID item -->
+    <input type="hidden" name="item_id" id="item_id" value="">
 </form>
 
+
 <h2>Emprunts en cours</h2>
+
 <ul>
     {% for membre in membres %}
-        <li>
-            <strong>{{ membre.nom }} {{ membre.prenom }}</strong>
-            {% if membre.emprunt_set.all %}
+        {% if membre.emprunts.all %}
+            <li>
+                <strong>{{ membre.nom.title }} {{ membre.prenom.title }}</strong>
+
+                {% if membre.bloque == True %}
+                    <span style="color: red;">| 3 emprunts max</span>
+                {% endif %}
+                {% if membre.jours_depuis_ancien_emprunt >= 7 %}
+                    <span style="color: red;">| En retard</span>
+                {% endif %}
+
                 <ul>
-                    {% for emprunt in membre.emprunt_set.all %}
+                    {% for emprunt in membre.emprunts.all %}
                         <li>
-                            {{ emprunt.item_type }} - ID {{ emprunt.item_id }}
-                            <a href="{% url 'return_item' emprunt.id %}">Rendre</a>
+                            {{ emprunt.item_type.capitalize }} - {{ emprunt.get_item_name.capitalize }}
+                            <a href="{% url 'return_item' emprunt.id %}"><button>Rendre</button></a>
                         </li>
                     {% endfor %}
                 </ul>
-            {% else %}
-                Aucun emprunt.
-            {% endif %}
-        </li>
+            </li>
+        {% endif %}
     {% endfor %}
 </ul>
+
 
 </body>
 </html>

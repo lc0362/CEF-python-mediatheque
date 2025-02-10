@@ -1,7 +1,8 @@
 from django.db import models
+from django.utils.timezone import now
+from datetime import timedelta
 
 class Emprunteur(models.Model):
-    """Représente un membre-emprunteur avec une limite de 3 articles"""
     nom = models.CharField(max_length=50)
     prenom = models.CharField(max_length=50)
     email = models.EmailField(unique=True)
@@ -13,29 +14,34 @@ class Emprunteur(models.Model):
         return f"{self.prenom} {self.nom}"
 
     def nb_emprunts(self):
-        """Compte le nombre d'emprunts actifs"""
         return self.emprunts.count()
 
+    def retards(self):
+        une_semaine = now().date() - timedelta(days=7)
+        return self.emprunts.filter(date_emprunt__lt=une_semaine).exists()
+
     def check_bloque(self):
-        """Met à jour le statut de blocage du membre"""
-        self.bloque = self.nb_emprunts() >= 3
+        if self.nb_emprunts() >= 3 or self.retards():
+            self.bloque = True
+        else:
+            self.bloque = False
         self.save()
 
     def emprunter(self, item_type, item_id):
-        """Ajoute un emprunt si possible"""
-        print(f"Tentative d'emprunt de {item_type} (ID: {item_id}) par {self.prenom} {self.nom}")  # Debug
         if not self.bloque and self.nb_emprunts() < 3:
             from .emprunt import Emprunt  # Import interne pour éviter une boucle
             Emprunt.objects.create(membre=self, item_type=item_type, item_id=item_id)
             self.check_bloque()
-            print(f"✔ {item_type} (ID: {item_id}) emprunté avec succès !")  # Debug
             return True
-        print("⛔ Emprunt refusé : limite atteinte ou membre bloqué.")  # Debug
         return False
 
     def give_back(self, emprunt):
-        """Supprime un emprunt et met à jour le statut de blocage"""
-        print(f"🔄 Retour de {emprunt.item_type} (ID: {emprunt.item_id}) par {self.prenom} {self.nom}")  # Debug
         emprunt.delete()
         self.check_bloque()
+
+    def jours_depuis_ancien_emprunt(self):
+        ancien_emprunt = self.emprunts.order_by("date_emprunt").first()
+        if ancien_emprunt:
+            return (now().date() - ancien_emprunt.date_emprunt).days
+        return 0  # Aucun emprunt
 

@@ -1,6 +1,7 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from bibliothecaire.models import Emprunteur, Emprunt
 from mediatheque.models.media import Livre, Cd, Dvd
+from django.contrib import messages
 
 def loan_management(request):
     membres = Emprunteur.objects.all()
@@ -13,23 +14,18 @@ def loan_management(request):
         item_id = request.POST.get("item_id")
         item_type = request.POST.get("item_type")
 
-        # Vérification des données
         if not membre_id or not item_id or not item_type:
             messages.error(request, "Données manquantes")
             return redirect("loan_management")
 
-        # Récupération du membre
-        membre = get_object_or_404(Membre, id=membre_id)
+        membre = get_object_or_404(Emprunteur, id=membre_id)
 
-        # Vérifier s'il est bloqué
         if membre.bloque:
             messages.error(request, "Ce membre a atteint la limite de 3 emprunts.")
             return redirect("loan_management")
 
-        # Créer un nouvel emprunt
         Emprunt.objects.create(membre=membre, item_id=item_id, item_type=item_type)
 
-        # Mettre à jour le statut du membre
         membre.check_bloque()
         messages.success(request, f"{item_type.capitalize()} emprunté avec succès !")
 
