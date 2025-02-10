@@ -1,6 +1,6 @@
 from django.db import models
 from .membre import Emprunteur
-from mediatheque.models.media import Livre, Cd, Dvd
+from mediatheque.models import Livre, Cd, Dvd
 import logging
 
 logger = logging.getLogger(__name__)

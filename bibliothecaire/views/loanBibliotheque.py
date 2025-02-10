@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from bibliothecaire.models import Emprunteur, Emprunt
-from mediatheque.models.media import Livre, Cd, Dvd
+from bibliothecaire.models.membre import Emprunteur
+from bibliothecaire.models.emprunt import Emprunt
+from mediatheque.models import Livre, Cd, Dvd
 from django.contrib import messages
 
 def loan_management(request):

@@ -1,5 +1,4 @@
 from django import forms
-from bibliothecaire.models import Emprunteur
 
 class FormLoan(forms.Form):
     item_type = forms.ChoiceField(
@@ -7,4 +6,8 @@ class FormLoan(forms.Form):
         widget=forms.HiddenInput()
     )
     item_id = forms.IntegerField(widget=forms.HiddenInput())
-    membre = forms.ModelChoiceField(queryset=Emprunteur.objects.all(), label="Membre")
+
+    def __init__(self, *args, **kwargs):
+        from bibliothecaire.models.membre import Emprunteur  # Import local
+        super().__init__(*args, **kwargs)
+        self.fields['membre'] = forms.ModelChoiceField(queryset=Emprunteur.objects.all(), label="Membre")

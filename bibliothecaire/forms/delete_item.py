@@ -1,8 +1,6 @@
 from django.shortcuts import get_object_or_404
 from django.http import JsonResponse
-from mediatheque.models.media import Livre, Cd, Dvd
-from mediatheque.models.jeu import JeuDePlateau
-
+from mediatheque.models.media import Livre, Cd, Dvd, JeuDePlateau
 
 def delete_item(request, item_type, item_id):
     model_map = {
