@@ -1,5 +1,4 @@
 from django.db import models
-from django.utils.timezone import now
 from .membre import Emprunteur
 from mediatheque.models.media import Livre, Cd, Dvd
 import logging

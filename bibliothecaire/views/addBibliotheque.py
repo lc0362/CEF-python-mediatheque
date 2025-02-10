@@ -1,7 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from mediatheque.models.media import Livre, Cd, Dvd
-from mediatheque.models.jeu import JeuDePlateau
+from mediatheque.models import Livre, Cd, Dvd, JeuDePlateau
 from bibliothecaire.forms.forms_medias import FormLivres, FormCds, FormDvds, FormJeux
 
 
