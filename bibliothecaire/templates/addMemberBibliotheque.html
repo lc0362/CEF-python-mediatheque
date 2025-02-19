@@ -12,7 +12,7 @@
 <body>
 <h1>Créer un membre emprunteur</h1>
 
-<form method="POST">
+<form method="POST" novalidate>
     {% csrf_token %}
     <table>
         {{ form_member.as_table }}

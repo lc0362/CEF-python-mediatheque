@@ -6,3 +6,4 @@ class FormMember(forms.ModelForm):
         model = Emprunteur
         fields = ['nom', 'prenom', 'email', 'optin', 'telephone']
 
+

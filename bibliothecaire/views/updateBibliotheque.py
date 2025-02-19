@@ -2,7 +2,9 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from mediatheque.models import Livre, Cd, Dvd, JeuDePlateau
 from bibliothecaire.forms.forms_update import UpdateLivreForm, UpdateCdForm, UpdateDvdForm, UpdateJeuForm
+from django.contrib.auth.decorators import login_required
 
+@login_required(login_url='/bibliothecaire/login/')
 def updateBibliotheque(request):
     livres = Livre.objects.all()
     cds = Cd.objects.all()

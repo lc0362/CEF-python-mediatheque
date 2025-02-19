@@ -1,0 +1,20 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <link rel="shortcut icon" href="{% static 'imgs/favicon.ico' %}">
+    <title>Connexion Bibliothécaire</title>
+</head>
+<body>
+    <h1>Connexion Bibliothécaire</h2>
+    <form method="POST">
+        {% csrf_token %}
+        <table>
+            {{ form.as_table }}
+        </table>
+        <button type="submit">Se connecter</button>
+    </form>
+
+</body>
+</html>

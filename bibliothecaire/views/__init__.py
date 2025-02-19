@@ -6,5 +6,5 @@ from .addMemberBibliotheque import addMemberBibliotheque
 from .updateMemberBibliotheque import updateMemberBibliotheque
 from .delete_member import delete_member
 from .loanBibliotheque import loan_management, return_item
-
+from .loginBibliotheque import BibliothecaireLoginView
 

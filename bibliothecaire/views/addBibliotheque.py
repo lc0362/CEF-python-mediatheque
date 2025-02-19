@@ -3,7 +3,6 @@ from django.contrib import messages
 from mediatheque.models import Livre, Cd, Dvd, JeuDePlateau
 from bibliothecaire.forms.forms_medias import FormLivres, FormCds, FormDvds, FormJeux
 
-
 def addBibliotheque(request):
     livres = Livre.objects.all()
     cds = Cd.objects.all()
